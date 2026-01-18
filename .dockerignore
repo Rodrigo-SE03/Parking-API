@@ -1,0 +1,49 @@
+# Testes
+**/tests/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Ambiente de desenvolvimento
+venv/
+.env
+.venv
+env/
+ENV/
+
+# Git e controle de versão
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Arquivos de configuração do editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentação e arquivos auxiliares
+README.md
+tree.txt
+test.py
+*.md
+LICENSE
+
+# Configuração de testes
+pytest.ini
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Arquivos temporários e logs
+*.log
+*.tmp
+*.temp
+__pycache__/
