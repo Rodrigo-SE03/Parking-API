@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from parking.router import router
-from core.configs import ENV
+from app.parking.router import router
+from app.core.configs import ENV
 import uvicorn
 
 app = FastAPI(

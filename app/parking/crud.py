@@ -1,4 +1,4 @@
-from db.mongo import get_collection, get_db
+from app.db.mongo import get_collection, get_db
 from .schemas import ParkingItem
 from typing import Literal
 from datetime import datetime

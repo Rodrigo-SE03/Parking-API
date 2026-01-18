@@ -116,6 +116,9 @@ docker-compose up -d
 # Ver logs
 docker-compose logs -f
 
+# Ver os logs recentes da API
+docker logs -f --tail 100 parking-api
+
 # Parar containers
 docker-compose down
 
