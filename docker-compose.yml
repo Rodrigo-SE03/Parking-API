@@ -1,26 +1,20 @@
 version: '3.8'
 
 services:
-  # MongoDB
   mongodb:
     image: mongo:8.0
-    container_name: parking-db
+    container_name: parking-mongodb
     restart: unless-stopped
+    ports:
+      - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
       - mongodb_data:/data/db
     networks:
       - parking-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand('ping').ok"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 10s
 
-  # FastAPI
   api:
     build:
       context: .
@@ -30,18 +24,17 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017
-      - ENV=prod
+      - MONGO_URI=${MONGO_URI:-mongodb://admin:admin@mongodb:27017}
+      - ENV=${ENV:-prod}
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongodb
     networks:
       - parking-network
-
-networks:
-  parking-network:
-    driver: bridge
 
 volumes:
   mongodb_data:
     driver: local
+
+networks:
+  parking-network:
+    driver: bridge

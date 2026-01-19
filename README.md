@@ -6,42 +6,52 @@ API REST para gerenciamento de estacionamento desenvolvida com FastAPI e MongoDB
 
 - Python 3.13
 - FastAPI
-- MongoDB
+- MongoDB (Atlas ou Local via Docker)
 - Pydantic
 - Pytest
-- Docker & Docker Compose
+- Docker
 
 ## Requisitos
 
-- Docker e Docker Compose
-- Python 3.13+ (para desenvolvimento local)
+- Python 3.13+
+- Docker
+- Mongo DB Atlas (para produção)
 
-## Instalação e Execução
+## Configuração do Banco de Dados
 
-### Com Docker (Recomendado)
+### Opção 1: MongoDB Atlas (Produção)
 
-1. Clone o repositório
-2. Configure as variáveis de ambiente:
+Para subir o projeto para ambiente de produção, é necessário configurar um cluster no MongoDB Atlas e obter a connection string para o cluster. No arquivo `.env`, use: `MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/...`.
+
+### Opção 2: MongoDB Local
+
+No arquivo `.env`, use: `MONGO_URI=mongodb://admin:admin@mongodb:27017`
+
+## Desenvolvimento Local
+
+### Rodando com Docker
+
+1. Configure o arquivo `.env` baseado no `.env.example`: `MONGO_URI=mongodb://admin:admin@mongodb:27017`
+
+2. Inicie os containers:
 
 ```bash
-cp .env.example .env
-```
-
-Edite o arquivo `.env` e altere as credenciais do MongoDB.
-
-3. Inicie os containers:
-
-```bash
-docker compose up --build
+docker compose up -d
 ```
 
 A API estará disponível em `http://localhost:8000`
 
 Documentação Swagger: `http://localhost:8000/docs`
 
-Observação: Caso tenha rodado o docker compose up antes de configurar o .env, será necessário rodar ```docker compose down -v``` para remover as credenciais incorretas antigas.
+## Testes
 
-### Desenvolvimento Local
+Execute os testes com pytest:
+
+```bash
+pytest
+```
+
+### Rodando sem Docker (API local + MongoDB Atlas ou MongoDB local)
 
 1. Crie e ative o ambiente virtual:
 
@@ -56,26 +66,18 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Configure o arquivo `.env` com a URI do MongoDB local
+3. Configure o arquivo `.env` baseado no `.env.example`:
+   - Para MongoDB Atlas: use a connection string do Atlas
+   - Para MongoDB local: use `mongodb://admin:admin@localhost:27017` e inicie o MongoDB localmente
+    ```bash
+    docker run -d --name parking-db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo:8.0
+    ```
 
-4. Execute o container do MongoDB
-```bash
-docker run -d --name parking-db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME={seu_username} -e MONGO_INITDB_ROOT_PASSWORD={sua_senha} mongo:8.0
-```
-
-5. Execute a aplicação:
+4. Execute a aplicação:
 
 ```bash
 cd app
 python main.py
-```
-
-## Testes
-
-Execute os testes com pytest:
-
-```bash
-pytest
 ```
 
 ## Endpoints
@@ -98,30 +100,38 @@ Remove um registro do banco de dados.
 ## Comandos Docker
 
 ```bash
-# Iniciar containers
+# Iniciar containers (API + MongoDB local)
 docker compose up -d
 
-# Ver logs
+# Ver logs de todos os serviços
 docker compose logs -f
 
-# Acompanhar logs recentes da API
+# Ver logs apenas da API
 docker logs -f --tail 100 parking-api
+
+# Ver logs apenas do MongoDB
+docker logs -f --tail 100 parking-mongodb
 
 # Parar containers
 docker compose down
 
-# Remover volumes (limpa o banco de dados)
+# Parar containers e remover volumes (apaga dados do MongoDB local)
 docker compose down -v
 
-# Reconstruir imagens
+# Reconstruir imagem da API
 docker compose build --no-cache
+
+# Acessar o MongoDB via CLI (quando rodando com Docker)
+docker exec -it parking-mongodb mongosh -u admin -p admin
 ```
 
 ## Variáveis de Ambiente
 
 Variáveis necessárias no arquivo `.env`:
 
-- `MONGO_USERNAME`: Usuário do MongoDB
-- `MONGO_PASSWORD`: Senha do MongoDB
-- `MONGO_URI`: URI de conexão com o MongoDB (para teste local)
-- `ENV`: Ambiente de execução (para teste local - 'dev'/'prod')
+- `MONGO_URI`: URI de conexão com o MongoDB
+  - MongoDB Atlas: `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/...`
+  - MongoDB Local (Docker): `mongodb://admin:admin@mongodb:27017`
+- `ENV`: Ambiente de execução
+  - `dev`: usa o banco `parking_db_test`
+  - `prod`: usa o banco `parking_db`
