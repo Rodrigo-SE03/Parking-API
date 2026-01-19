@@ -56,7 +56,12 @@ pip install -r requirements.txt
 
 3. Configure o arquivo `.env` com a URI do MongoDB local
 
-4. Execute a aplicação:
+4. Execute o container do MongoDB
+```bash
+docker run -d --name parking-db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME={seu_username} -e MONGO_INITDB_ROOT_PASSWORD={sua_senha} mongo:8.0
+```
+
+5. Execute a aplicação:
 
 ```bash
 cd app
