@@ -32,12 +32,14 @@ Edite o arquivo `.env` e altere as credenciais do MongoDB.
 3. Inicie os containers:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 A API estará disponível em `http://localhost:8000`
 
 Documentação Swagger: `http://localhost:8000/docs`
+
+Observação: Caso tenha rodado o docker compose up antes de configurar o .env, será necessário rodar ```docker compose down -v``` para remover as credenciais incorretas antigas.
 
 ### Desenvolvimento Local
 
@@ -93,45 +95,26 @@ Retorna o histórico de ações do veículo.
 ### DELETE /parking/{plate}
 Remove um registro do banco de dados.
 
-## Estrutura do Projeto
-
-```
-app/
-├── main.py              # Ponto de entrada da aplicação
-├── core/
-│   └── configs.py       # Configurações e variáveis de ambiente
-├── db/
-│   └── mongo.py         # Conexão com MongoDB
-└── parking/
-    ├── router.py        # Definição das rotas
-    ├── service.py       # Lógica de negócio
-    ├── crud.py          # Operações no banco de dados
-    ├── schemas.py       # Modelos de dados (Pydantic)
-    ├── errors.py        # Definição de erros da API
-    └── utils/
-        └── helper_functions.py
-```
-
 ## Comandos Docker
 
 ```bash
 # Iniciar containers
-docker-compose up -d
+docker compose up -d
 
 # Ver logs
-docker-compose logs -f
+docker compose logs -f
 
-# Ver os logs recentes da API
+# Acompanhar logs recentes da API
 docker logs -f --tail 100 parking-api
 
 # Parar containers
-docker-compose down
+docker compose down
 
 # Remover volumes (limpa o banco de dados)
-docker-compose down -v
+docker compose down -v
 
 # Reconstruir imagens
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 ## Variáveis de Ambiente
@@ -140,5 +123,5 @@ Variáveis necessárias no arquivo `.env`:
 
 - `MONGO_USERNAME`: Usuário do MongoDB
 - `MONGO_PASSWORD`: Senha do MongoDB
-- `MONGO_URI`: URI de conexão com o MongoDB
-- `ENV`: Ambiente de execução (dev/prod)
+- `MONGO_URI`: URI de conexão com o MongoDB (para teste local)
+- `ENV`: Ambiente de execução (para teste local - 'dev'/'prod')

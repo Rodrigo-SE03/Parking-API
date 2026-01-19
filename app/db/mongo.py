@@ -6,7 +6,11 @@ client: MongoClient | None = None
 def get_client():
   global client
   if client is None:
-    client = MongoClient(MONGO_URI)
+    try:
+      client = MongoClient(MONGO_URI)
+    except Exception as e:
+      print(f"Erro ao conectar com MongoDB: {e}")
+      raise e
   return client
 
 def get_db():
