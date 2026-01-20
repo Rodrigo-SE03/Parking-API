@@ -88,7 +88,10 @@ uvicorn app.main:app --reload
 Para executar os testes, use pytest na raiz do projeto:
 
 ```bash
-pytest
+PYHTONPATH=. pytest
+
+# Windows (PowerShell)
+$env:PYTHONPATH="."; pytest
 ```
 
 ## Endpoints
