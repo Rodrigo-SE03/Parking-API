@@ -68,9 +68,20 @@ pip install -r requirements.txt
 
 4. Execute a aplicação:
 
+**Importante**: Execute sempre da raiz do projeto (onde está o `docker-compose.yml`).
+
 ```bash
-cd app
-python main.py
+# Opção 1 (recomendado):
+python -m uvicorn app.main:app --reload
+
+# Opção 2 (se der erro de importação):
+# Linux/Mac:
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+uvicorn app.main:app --reload
+
+# Windows (PowerShell):
+$env:PYTHONPATH="$PWD"
+uvicorn app.main:app --reload
 ```
 
 5. Testes
