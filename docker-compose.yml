@@ -24,6 +24,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - PORT=8000
       - MONGO_URI=${MONGO_URI:-mongodb://admin:admin@mongodb:27017}
       - ENV=${ENV:-prod}
     depends_on:

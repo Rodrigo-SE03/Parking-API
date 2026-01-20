@@ -9,7 +9,6 @@ def get_client():
     try:
       client = MongoClient(MONGO_URI)
     except Exception as e:
-      print(f"Erro ao conectar com MongoDB: {e}")
       raise e
   return client
 

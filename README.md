@@ -43,13 +43,6 @@ A API estará disponível em `http://localhost:8000`
 
 Documentação Swagger: `http://localhost:8000/docs`
 
-## Testes
-
-Execute os testes com pytest:
-
-```bash
-pytest
-```
 
 ### Rodando sem Docker (API local + MongoDB Atlas ou MongoDB local)
 
@@ -78,6 +71,13 @@ pip install -r requirements.txt
 ```bash
 cd app
 python main.py
+```
+
+5. Testes
+Para executar os testes, use pytest na raiz do projeto:
+
+```bash
+pytest
 ```
 
 ## Endpoints
