@@ -1,8 +1,8 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.parking.router import router
-from app.core.configs import ENV
-import uvicorn
 
 app = FastAPI(
   title="Parking API",

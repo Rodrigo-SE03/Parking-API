@@ -1,7 +1,5 @@
+"""Testes para o endpoint PUT /parking/{id}/pay (Pagamento)
 """
-Testes para o endpoint PUT /parking/{id}/pay (Pagamento)
-"""
-import pytest
 from fastapi.testclient import TestClient
 from main import app
 

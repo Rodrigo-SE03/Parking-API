@@ -1,5 +1,4 @@
 import sys
-import os
 from pathlib import Path
 
 # Adiciona o diretório 'app' ao path para imports funcionarem
@@ -7,9 +6,9 @@ app_dir = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(app_dir))
 
 import pytest
+from db.mongo import get_collection
 from fastapi.testclient import TestClient
 from main import app
-from db.mongo import get_collection
 
 # Cliente de teste para todos os testes
 client = TestClient(app)

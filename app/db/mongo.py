@@ -1,5 +1,6 @@
 from pymongo import MongoClient
-from app.core.configs import MONGO_URI, ENV
+
+from app.core.configs import ENV, MONGO_URI
 
 client: MongoClient | None = None
 

@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, field_validator
-from fastapi import Path, Body
-from typing import Optional
 from datetime import datetime
+
 from bson import ObjectId
+from fastapi import Body, Path
+from pydantic import BaseModel, Field, field_validator
+
 
 class PlateItem(BaseModel):
   plate: str
@@ -12,14 +13,12 @@ bodySchema = Body(description="Placa do veículo", examples={"plate": "AAA-9999"
 idSchema = Path(description="Placa do veículo", examples="AAA-9999")
 
 class ParkingItem(BaseModel):
-  id: Optional[str] = Field(None, alias="_id")
+  id: str | None = Field(None, alias="_id")
   parking_id: int
   plate: str
-  time_enter: str = "0 minutes"
-  time_paid: str = "0 minutes"
-  time_left: str = "0 minutes"
-  paid: bool = False
-  left: bool = False
+  time_enter: datetime
+  time_paid: datetime
+  time_left: datetime
   created_at: datetime
 
   # Na validação, converte o ObjectID do Mongo para string

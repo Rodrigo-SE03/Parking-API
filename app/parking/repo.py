@@ -1,7 +1,9 @@
-from app.db.mongo import get_collection, get_db
-from .schemas import ParkingItem
-from typing import Literal
 from datetime import datetime
+from typing import Literal
+
+from app.db.mongo import get_collection, get_db
+
+from .schemas import ParkingItem
 from .utils.helper_functions import get_interval_minutes, get_next_parking_id
 
 Action = Literal["pay", "leave"]
@@ -30,9 +32,9 @@ class ParkingRepo:
     update = {}
     diff = get_interval_minutes(entry_time)
     if action == "pay":
-      update = {"$set": {"paid": True, "time_paid": diff}}
+      update = {"$set": {"time_paid": datetime.now()}}
     elif action == "leave":
-      update = {"$set": {"left": True, "time_left": diff}}
+      update = {"$set": {"time_left": datetime.now()}}
     
     self.collection.update_one({ "plate": plate },update)
 

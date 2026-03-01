@@ -1,7 +1,5 @@
+"""Testes para o endpoint GET /parking/{id} (Histórico)
 """
-Testes para o endpoint GET /parking/{id} (Histórico)
-"""
-import pytest
 from fastapi.testclient import TestClient
 from main import app
 

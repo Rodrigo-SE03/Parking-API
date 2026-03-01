@@ -1,5 +1,6 @@
-from .repo import ParkingRepo
 from fastapi import HTTPException
+
+from .repo import ParkingRepo
 from .schemas import History
 
 parking_repo = ParkingRepo()
@@ -7,10 +8,8 @@ parking_repo = ParkingRepo()
 def enter_parking_lot_service(id: str):
   item = parking_repo.get_item(id)
   if item:
-    if not item.left:
+    if not item.time_left:
       raise HTTPException(status_code=409, detail="O veículo já está no estacionamento")
-    else:
-      parking_repo.remove_item(id)
   
   new_item = parking_repo.insert_item(plate=id)
   return History(id=new_item.parking_id)

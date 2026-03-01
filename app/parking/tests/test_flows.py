@@ -1,8 +1,6 @@
-"""
-Testes de Fluxos Completos
+"""Testes de Fluxos Completos
 Testam cenários reais de uso da API com múltiplas operações
 """
-import pytest
 from fastapi.testclient import TestClient
 from main import app
 
