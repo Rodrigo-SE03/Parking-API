@@ -6,10 +6,13 @@ API REST para gerenciamento de estacionamento desenvolvida com FastAPI e MongoDB
 
 - Python 3.13
 - FastAPI
+- Uvicorn
 - MongoDB (Atlas ou Local via Docker)
 - Pydantic
 - Pytest
 - Docker
+- uv (gerenciador de projeto e pacotes)
+- ruff (linter)
 
 ## Requisitos
 
@@ -46,52 +49,26 @@ Documentação Swagger: `http://localhost:8000/docs`
 
 ### Rodando sem Docker (API local + MongoDB Atlas ou MongoDB local)
 
-1. Crie e ative o ambiente virtual:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-```
-
-2. Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Configure o arquivo `.env` baseado no `.env.example`:
+1. Configure o arquivo `.env` baseado no `.env.example`:
    - Para MongoDB Atlas: use a connection string do Atlas
    - Para MongoDB local: use `mongodb://admin:admin@localhost:27017` e inicie o MongoDB localmente
     ```bash
     docker run -d --name parking-db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo:8.0
     ```
 
-4. Execute a aplicação:
+2. Execute a aplicação:
 
 **Importante**: Execute sempre da raiz do projeto (onde está o `docker-compose.yml`).
 
 ```bash
-# Opção 1 (recomendado):
-python -m uvicorn app.main:app --reload
-
-# Opção 2 (se der erro de importação):
-# Linux/Mac:
-export PYTHONPATH="${PYTHONPATH}:$(pwd)"
-uvicorn app.main:app --reload
-
-# Windows (PowerShell):
-$env:PYTHONPATH="$PWD"
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-5. Testes
+3. Testes
 Para executar os testes, use pytest na raiz do projeto:
 
 ```bash
-PYHTONPATH=. pytest
-
-# Windows (PowerShell)
-$env:PYTHONPATH="."; pytest
+uv run pytest
 ```
 
 ## Endpoints
@@ -107,9 +84,6 @@ Registra a saída do veículo do estacionamento.
 
 ### GET /parking/{plate}
 Retorna o histórico de ações do veículo.
-
-### DELETE /parking/{plate}
-Remove um registro do banco de dados.
 
 ## Comandos Docker
 
