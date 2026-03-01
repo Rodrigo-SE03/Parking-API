@@ -36,7 +36,6 @@ class ParkingRepo:
     return self.get_item(plate)
   
   def update_item(self, plate: str, action: Action) -> ParkingItem | None:
-    # Primeiro busca a sessão ativa para obter o _id
     active_session = self.get_item(plate)
     if not active_session:
       return None
@@ -47,11 +46,9 @@ class ParkingRepo:
     elif action == "leave":
       update = {"$set": {"time_left": datetime.now()}}
     
-    # Atualiza pelo _id para garantir que pegamos a sessão correta
     object_id = ObjectId(active_session.id)
     self.collection.update_one({ "_id": object_id }, update)
     
-    # Busca o item atualizado pelo _id (sem restrição de time_left)
     updated = self.collection.find_one({ "_id": object_id })
     return ParkingItem.model_validate(updated) if updated else None
 
