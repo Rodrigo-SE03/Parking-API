@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from .utils.helper_functions import plate_validation
 from .schemas import PlateItem, idSchema, bodySchema, History
-from .crud import ParkingRepo
+from .repo import ParkingRepo
 from .service import (
     get_history_service,
     pay_parking_ticket_service,

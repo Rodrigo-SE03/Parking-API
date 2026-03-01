@@ -1,0 +1,48 @@
+[project]
+name = "parking"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.135.1",
+    "pymongo>=4.16.0",
+    "python-dotenv>=1.2.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.15.4",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",    # erros de sintaxe / estilo (pycodestyle)
+    "F",    # erros lógicos (pyflakes)
+    "I",    # ordenação de imports (isort)
+    "B",    # bugs comuns (flake8-bugbear)
+    "UP",   # melhorias de sintaxe (pyupgrade)
+    "D",    # docstrings (pydocstyle)
+]
+ignore = [
+    "E501", # comprimento de linha (formatter cuida disso)
+    "D107", # docstring ausente em __init_.py
+    "D100", # docstring ausente em módulo público
+    "D104", # docstring ausente em pacote público
+    "D203", # 1 blank line antes de docstring de classe
+    "D213", # multi-line docstring resumo em uma linha
+    "D415", # primeira linha de docstring deve terminar com ponto.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

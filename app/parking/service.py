@@ -1,4 +1,4 @@
-from .crud import ParkingRepo
+from .repo import ParkingRepo
 from fastapi import HTTPException
 from .schemas import History
 
