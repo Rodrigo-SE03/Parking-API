@@ -12,9 +12,9 @@ def plate_validation(plate: str) -> str:
   else:
     raise HTTPException(status_code=422, detail="Formatação da placa incorreta")
   
-def get_interval_minutes(created_at: datetime) -> str:
+def get_interval_minutes(created_at: datetime, event_time: datetime) -> str:
   """Calcula o intervalo em minutos entre o datetime atual e o datetime informado. Retorna no formato: 'x minutes'"""
-  minute_diff = (datetime.now() - created_at).total_seconds()/60
+  minute_diff = (event_time - created_at).total_seconds()/60
   return f"{round(minute_diff)} minutes"
 
 def get_next_parking_id(db) -> int:

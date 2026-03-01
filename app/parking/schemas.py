@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from bson import ObjectId
 from fastapi import Body, Path
@@ -16,9 +17,9 @@ class ParkingItem(BaseModel):
   id: str | None = Field(None, alias="_id")
   parking_id: int
   plate: str
-  time_enter: datetime
-  time_paid: datetime
-  time_left: datetime
+  time_enter: Optional[datetime] = None
+  time_paid: Optional[datetime] = None
+  time_left: Optional[datetime] = None
   created_at: datetime
 
   # Na validação, converte o ObjectID do Mongo para string
