@@ -12,6 +12,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - parking-network
 
   api:
     build:
@@ -27,13 +29,13 @@ services:
       - ENV=${ENV:-prod}
     depends_on:
       - mongodb
-    # networks:
-    #   - parking-network
+    networks:
+      - parking-network
 
 volumes:
   mongodb_data:
     driver: local
 
-# networks:
-#   parking-network:
-#     driver: bridge
+networks:
+  parking-network:
+    driver: bridge
