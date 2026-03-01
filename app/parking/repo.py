@@ -11,13 +11,14 @@ from .utils.helper_functions import get_next_parking_id
 Action = Literal["pay", "leave"]
 
 class ParkingRepo:
+  """Repositório para operações de persistência de dados de estacionamento."""
   def __init__(self):
     self.collection = get_collection()
 
   def get_item(self, plate: str) -> ParkingItem | None:
     """Retorna apenas a sessão ativa (sem saída) do veículo"""
     item = self.collection.find_one({ "plate": plate, "time_left": None })
-    if item == None:
+    if item is None:
       return None
     
     return ParkingItem.model_validate(item)
@@ -28,6 +29,7 @@ class ParkingRepo:
     return [ParkingItem.model_validate(item) for item in items]
   
   def insert_item(self, plate: str) -> ParkingItem | None:
+    """Insere um novo item no banco de dados e retorna o item criado."""
     item = ParkingItem(parking_id=get_next_parking_id(get_db()),plate=plate, created_at=datetime.now(), time_enter=datetime.now())
     doc = item.model_dump()
     
@@ -36,6 +38,7 @@ class ParkingRepo:
     return self.get_item(plate)
   
   def update_item(self, plate: str, action: Action) -> ParkingItem | None:
+    """Atualiza um item existente com a ação especificada (pagamento ou saída)."""
     active_session = self.get_item(plate)
     if not active_session:
       return None

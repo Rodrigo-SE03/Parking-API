@@ -16,8 +16,7 @@ router = APIRouter(prefix="/parking", tags=["parking"])
 
 @router.get("/{id}", response_model=list[History], responses=HISTORY_ERRORS)
 async def get_history(id: str = idSchema):
-    """Retorna uma lista com o histórico de ações do veículo no estacionamento (entrada, pagamento e saída)
-    """
+    """Retorna uma lista com o histórico de ações do veículo no estacionamento (entrada, pagamento e saída)"""
     plate = plate_validation(id)
     response = get_history_service(plate)
     return response
@@ -25,8 +24,7 @@ async def get_history(id: str = idSchema):
 
 @router.put("/{id}/pay", response_model=History, responses=PAY_ERRORS)
 async def pay_parking_ticket(id: str = idSchema):
-    """Registra o pagamento do estacionamento referente ao veículo
-    """
+    """Registra o pagamento do estacionamento referente ao veículo"""
     plate = plate_validation(id)
     response = pay_parking_ticket_service(plate)
     return response
@@ -34,8 +32,7 @@ async def pay_parking_ticket(id: str = idSchema):
 
 @router.put("/{id}/out", response_model=History, responses=LEAVE_ERRORS)
 async def exit_parking_lot(id: str = idSchema):
-    """Registra a saída do veículo do estacionamento
-    """
+    """Registra a saída do veículo do estacionamento"""
     plate = plate_validation(id)
     response = leave_parking_lot_service(plate)
     return response
@@ -43,8 +40,7 @@ async def exit_parking_lot(id: str = idSchema):
 
 @router.post("", response_model=History, status_code=201, responses=ENTER_ERRORS)
 async def enter_parking_lot(plateItem: PlateItem = bodySchema):
-    """Registra a entrada do veículo do estacionamento
-    """
+    """Registra a entrada do veículo do estacionamento"""
     plate = plate_validation(plateItem.plate)
     response = enter_parking_lot_service(plate)
     return response
@@ -52,8 +48,7 @@ async def enter_parking_lot(plateItem: PlateItem = bodySchema):
 
 @router.delete("/{id}", responses=HISTORY_ERRORS, status_code=204)
 async def delete_item(id: str = idSchema):
-    """Remove um item do banco de dados
-    """
+    """Remove um item do banco de dados"""
     plate = plate_validation(id)
     response = delete_parking_record_service(plate)
     return response

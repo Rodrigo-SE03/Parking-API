@@ -1,6 +1,6 @@
-"""Testes para o endpoint POST /parking/ (Entrada no estacionamento)
-"""
+"""Testes para o endpoint POST /parking/ (Entrada no estacionamento)"""
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -17,8 +17,8 @@ class TestEnterParkingLot:
     data = response.json()
     assert "id" in data  # Deve ter um ID
     assert isinstance(data["id"], int)  # ID deve ser número inteiro
-    assert data["paid"] == False
-    assert data["left"] == False
+    assert not data["paid"]
+    assert not data["left"]
     assert "time" in data
   
   def test_entrada_placa_minuscula(self):
@@ -62,8 +62,8 @@ class TestEnterParkingLot:
     
     assert response.status_code == 201
     data = response.json()
-    assert data["paid"] == False
-    assert data["left"] == False
+    assert not data["paid"]
+    assert not data["left"]
   
   def test_entrada_sem_body(self):
     """Cenário: Requisição sem body - deve retornar 422"""

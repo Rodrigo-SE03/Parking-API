@@ -1,6 +1,6 @@
-"""Testes para o endpoint PUT /parking/{id}/out (Saída do estacionamento)
-"""
+"""Testes para o endpoint PUT /parking/{id}/out (Saída do estacionamento)"""
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -15,8 +15,8 @@ class TestLeaveParkingLot:
     
     assert response.status_code == 200
     data = response.json()
-    assert data["paid"] == True
-    assert data["left"] == True
+    assert data["paid"]
+    assert data["left"]
     assert "time" in data
 
   def test_saida_sem_pagamento(self, veiculo_estacionado):

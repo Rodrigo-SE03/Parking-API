@@ -1,7 +1,9 @@
 """Testes de Fluxos Completos
+
 Testam cenários reais de uso da API com múltiplas operações
 """
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -34,8 +36,8 @@ class TestFluxosCompletos:
     assert historico.status_code == 200
     data = historico.json()
     assert len(data) == 1
-    assert data[0]["paid"] == True
-    assert data[0]["left"] == True
+    assert data[0]["paid"]
+    assert data[0]["left"]
   
   def test_fluxo_reentrada_apos_saida(self):
     """Cenário: Veículo sai e entra novamente - deve criar nova sessão"""
@@ -63,20 +65,20 @@ class TestFluxosCompletos:
     
     # Primeira sessão: fechada
     assert data[0]["id"] == first_id
-    assert data[0]["paid"] == True
-    assert data[0]["left"] == True
+    assert data[0]["paid"]
+    assert data[0]["left"]
     
     # Segunda sessão: ativa
     assert data[1]["id"] == second_id
-    assert data[1]["paid"] == False
-    assert data[1]["left"] == False
+    assert not data[1]["paid"]
+    assert not data[1]["left"]
   
   def test_fluxo_ciclo_multiplo(self):
     """Cenário: Veículo completa 3 ciclos completos"""
     placa = "CIC-3333"
     ids = []
     
-    for i in range(3):
+    for _ in range(3):
       # Entra
       entrada = client.post("/parking/", json={"plate": placa})
       assert entrada.status_code == 201
@@ -94,8 +96,8 @@ class TestFluxosCompletos:
     
     for i, sessao in enumerate(data):
       assert sessao["id"] == ids[i]
-      assert sessao["paid"] == True
-      assert sessao["left"] == True
+      assert sessao["paid"]
+      assert sessao["left"]
   
   def test_multiplos_veiculos_simultaneos(self):
     """Cenário: Múltiplos veículos no estacionamento ao mesmo tempo"""
@@ -119,20 +121,20 @@ class TestFluxosCompletos:
     h1 = client.get(f"/parking/{placas[0]}")
     data1 = h1.json()
     assert len(data1) == 1  # 1 sessão fechada
-    assert data1[0]["paid"] == True
-    assert data1[0]["left"] == True
+    assert data1[0]["paid"]
+    assert data1[0]["left"]
     
     h2 = client.get(f"/parking/{placas[1]}")
     data2 = h2.json()
     assert len(data2) == 1  # 1 sessão ativa com pagamento
-    assert data2[0]["paid"] == True
-    assert data2[0]["left"] == False
+    assert data2[0]["paid"]
+    assert not data2[0]["left"]
     
     h3 = client.get(f"/parking/{placas[2]}")
     data3 = h3.json()
     assert len(data3) == 1  # 1 sessão ativa sem pagamento
-    assert data3[0]["paid"] == False
-    assert data3[0]["left"] == False
+    assert not data3[0]["paid"]
+    assert not data3[0]["left"]
   
   def test_fluxo_sessao_ativa_mantem_tempo_dinamico(self):
     """Cenário: Sessão ativa deve mostrar tempo dinâmico (calculado até agora)"""
@@ -152,4 +154,4 @@ class TestFluxosCompletos:
     # Ambas devem ter tempo válido
     assert "minutes" in time1
     assert "minutes" in time2
-    assert h1.json()[0]["left"] == False  # Ainda não saiu
+    assert not h1.json()[0]["left"]  # Ainda não saiu

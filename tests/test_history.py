@@ -1,6 +1,6 @@
-"""Testes para o endpoint GET /parking/{id} (Histórico)
-"""
+"""Testes para o endpoint GET /parking/{id} (Histórico)"""
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -16,8 +16,8 @@ class TestGetHistory:
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
-    assert data[0]["paid"] == False
-    assert data[0]["left"] == False
+    assert not data[0]["paid"]
+    assert not data[0]["left"]
     assert "time" in data[0]
   
   def test_historico_entrada_e_pagamento(self, veiculo_pago):
@@ -27,8 +27,8 @@ class TestGetHistory:
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
-    assert data[0]["paid"] == True
-    assert data[0]["left"] == False
+    assert data[0]["paid"]
+    assert not data[0]["left"]
     assert "time" in data[0]
   
   def test_historico_ciclo_completo(self, veiculo_completo):
@@ -38,8 +38,8 @@ class TestGetHistory:
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
-    assert data[0]["paid"] == True
-    assert data[0]["left"] == True
+    assert data[0]["paid"]
+    assert data[0]["left"]
     assert "time" in data[0]
   
   def test_historico_multiplas_sessoes(self):
@@ -60,11 +60,11 @@ class TestGetHistory:
     data = response.json()
     assert len(data) == 2
     # Primeira sessão: fechada
-    assert data[0]["paid"] == True
-    assert data[0]["left"] == True
+    assert data[0]["paid"]
+    assert data[0]["left"]
     # Segunda sessão: ativa
-    assert data[1]["paid"] == False
-    assert data[1]["left"] == False
+    assert not data[1]["paid"]
+    assert not data[1]["left"]
   
   def test_historico_tres_sessoes(self):
     """Cenário: Veículo com 3 sessões completas - histórico deve mostrar todas"""
@@ -89,10 +89,10 @@ class TestGetHistory:
     data = response.json()
     assert len(data) == 3
     # Primeiras duas: fechadas
-    assert data[0]["left"] == True
-    assert data[1]["left"] == True
+    assert data[0]["left"]
+    assert data[1]["left"]
     # Terceira: ativa
-    assert data[2]["left"] == False
+    assert not data[2]["left"]
   
   def test_historico_veiculo_nao_existe(self):
     """Cenário: Consultar histórico de veículo inexistente - deve retornar 404"""

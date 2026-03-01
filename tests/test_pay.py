@@ -1,6 +1,6 @@
-"""Testes para o endpoint PUT /parking/{id}/pay (Pagamento)
-"""
+"""Testes para o endpoint PUT /parking/{id}/pay (Pagamento)"""
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -15,8 +15,8 @@ class TestPayParkingTicket:
     
     assert response.status_code == 200
     data = response.json()
-    assert data["paid"] == True
-    assert data["left"] == False
+    assert data["paid"]
+    assert not data["left"]
     assert "time" in data
   
   def test_pagamento_veiculo_nao_existe(self):

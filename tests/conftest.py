@@ -1,14 +1,15 @@
 import sys
 from pathlib import Path
 
+import pytest
+from fastapi.testclient import TestClient
+
 # Adiciona o diretório 'app' ao path para imports funcionarem
 app_dir = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(app_dir))
 
-import pytest
-from app.db.mongo import get_collection
-from fastapi.testclient import TestClient
-from app.main import app
+from app.db.mongo import get_collection  # noqa: E402
+from app.main import app  # noqa: E402
 
 # Cliente de teste para todos os testes
 client = TestClient(app)

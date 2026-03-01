@@ -1,9 +1,9 @@
-"""Testes unitários para funções auxiliares (helper_functions)
-"""
+"""Testes unitários para funções auxiliares (helper_functions)"""
 from datetime import datetime, timedelta
 
 import pytest
 from fastapi import HTTPException
+
 from app.parking.utils.helper_functions import get_interval_minutes, plate_validation
 
 
