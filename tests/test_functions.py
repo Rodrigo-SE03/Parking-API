@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import pytest
 from fastapi import HTTPException
-from parking.utils.helper_functions import get_interval_minutes, plate_validation
+from app.parking.utils.helper_functions import get_interval_minutes, plate_validation
 
 
 class TestPlateValidation:
@@ -51,23 +51,26 @@ class TestIntervalMinutes:
     def test_intervalo_45_minutos(self):
         """Cenário: Diferença de 45 minutos - deve retornar '45 minutes'"""
         inicio = datetime.now() - timedelta(minutes=45)
-        resultado = get_interval_minutes(inicio)
+        fim = datetime.now()
+        resultado = get_interval_minutes(inicio, fim)
         assert resultado == "45 minutes"
     
     def test_intervalo_1_minuto(self):
         """Cenário: Diferença de 1 minuto - deve retornar '1 minutes'"""
         inicio = datetime.now() - timedelta(minutes=1)
-        resultado = get_interval_minutes(inicio)
+        fim = datetime.now()
+        resultado = get_interval_minutes(inicio, fim)
         assert resultado == "1 minutes"
     
     def test_intervalo_60_minutos(self):
         """Cenário: Diferença de 60 minutos (1 hora) - deve retornar '60 minutes'"""
         inicio = datetime.now() - timedelta(minutes=60)
-        resultado = get_interval_minutes(inicio)
+        fim = datetime.now()
+        resultado = get_interval_minutes(inicio, fim)
         assert resultado == "60 minutes"
     
     def test_intervalo_zero_minutos(self):
         """Cenário: Sem diferença de tempo - deve retornar '0 minutes'"""
-        inicio = datetime.now()
-        resultado = get_interval_minutes(inicio)
+        agora = datetime.now()
+        resultado = get_interval_minutes(agora, agora)
         assert resultado == "0 minutes"

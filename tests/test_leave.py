@@ -1,7 +1,7 @@
 """Testes para o endpoint PUT /parking/{id}/out (Saída do estacionamento)
 """
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
@@ -34,11 +34,11 @@ class TestLeaveParkingLot:
     assert "não encontrada no sistema" in response.json()["detail"]
   
   def test_saida_duplicada(self, veiculo_completo):
-    """Cenário: Tentar sair duas vezes - deve retornar 409"""
+    """Cenário: Tentar sair duas vezes - deve retornar 404 (pois o veículo já foi removido e ainda não voltou a entrar)"""
     response = client.put(f"/parking/{veiculo_completo}/out")
     
-    assert response.status_code == 409
-    assert "Saída do veículo já registrada" in response.json()["detail"]
+    assert response.status_code == 404
+    assert "não encontrada no sistema" in response.json()["detail"]
   
   def test_saida_placa_invalida(self):
     """Cenário: Placa com formato inválido - deve retornar 422"""

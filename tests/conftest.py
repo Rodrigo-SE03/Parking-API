@@ -6,9 +6,9 @@ app_dir = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(app_dir))
 
 import pytest
-from db.mongo import get_collection
+from app.db.mongo import get_collection
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 # Cliente de teste para todos os testes
 client = TestClient(app)

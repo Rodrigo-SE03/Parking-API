@@ -1,7 +1,7 @@
 """Testes para o endpoint DELETE /parking/{id} (Remoção de registros)
 """
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 client = TestClient(app)
 

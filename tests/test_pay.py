@@ -1,7 +1,7 @@
 """Testes para o endpoint PUT /parking/{id}/pay (Pagamento)
 """
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
@@ -34,7 +34,7 @@ class TestPayParkingTicket:
     assert "já registrado" in response.json()["detail"]
   
   def test_pagamento_apos_saida(self):
-    """Cenário: Tentar pagar depois de já ter saído - deve retornar 409"""
+    """Cenário: Tentar pagar depois de já ter saído - deve retornar 404 (sessão não é mais ativa)"""
     placa = "SAI-9999"
     client.post("/parking/", json={"plate": placa})
     client.put(f"/parking/{placa}/pay")
@@ -43,8 +43,8 @@ class TestPayParkingTicket:
     # Tenta pagar novamente após saída
     response = client.put(f"/parking/{placa}/pay")
     
-    assert response.status_code == 409
-    assert "já registrado" in response.json()["detail"]
+    assert response.status_code == 404
+    assert "não encontrada no sistema" in response.json()["detail"]
   
   def test_pagamento_placa_invalida(self):
     """Cenário: Placa com formato inválido - deve retornar 422"""
